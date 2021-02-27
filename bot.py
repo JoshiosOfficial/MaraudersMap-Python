@@ -61,4 +61,3 @@ for filename in os.listdir('./cogs'):
 
 
 client.run('NzU3MzQwNDc1MzQ1NzMxNzY1.X2e-SA.x8Yr1lA5yHZBUngg0coX119mZd0') # MARAUDER MAP ALPHA
-#client.run('NzQyMDY1MzQzOTYyNTQ2MTk4.XzAsNA.9f6VBiLuU_OuElcmoCIMW53WZbw') MARAUDER MAP
