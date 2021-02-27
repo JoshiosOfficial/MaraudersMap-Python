@@ -52,4 +52,4 @@ class Locations(commands.Cog):
 
 
 def setup(client):
-    client.add_cog(Player(client))
+    client.add_cog(Locations(client))
