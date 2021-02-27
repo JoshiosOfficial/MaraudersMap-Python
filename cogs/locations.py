@@ -1,0 +1,55 @@
+import discord
+from discord.ext import commands
+
+import aiohttp
+import datetime
+import humanize
+
+class Locations(commands.Cog):
+
+    def __init__(self, client):
+        self.client = client
+
+    @commands.command()
+    async def locations(self, ctx, username=None):
+
+        if not username:
+            embed = discord.Embed(
+                description = f"The player `{username}` was not found. This means that this player never joined Potterworld before, or you incorrectly spelled their username. Please try again.",
+                title = "Player Not Found",
+                color = self.client.main_color
+            )
+            await ctx.send(embed=embed)
+            return
+
+        response = await self.client.session.get(f"https://api.potterworldmc.com/player/{username}")
+        data = await response.json()
+
+        if data['status'] == False:
+            embed = discord.Embed(
+                description = f"The player `{username}` was not found. This means that this player never joined Potterworld before, or you incorrectly spelled their username. Please try again.",
+                title = "Player Not Found",
+                color = self.client.main_color
+            )
+            await ctx.send(embed=embed)
+            return
+
+        player = data["player"]
+
+        embed = discord.Embed(
+            description = (
+                f"**Basic Information**:\n"
+                f"**Locations Explored**: {len([match for match in player['unlockables'] if 'world_discovery_' in match] if player['unlockables'] else '0')}/21\n\n"
+                f"**Hogsworth Fast Travel**: {len([match for match in player['unlockables'] if 'world_fasttravel_' in match] if player['unlockables'] else '0')}/19\n\n"
+                f"**Warpkey Bag**:{[match for match in player['unlockables']['world_warpkey_'] if 'world_warpkey_' in match]}"
+            ),
+            color = self.client.house_colors[data["player"]["house"].lower()] if data["player"]["house"] else self.client.main_color,
+        )
+        embed.set_footer(text = f"Last updated: {humanize.naturaltime(datetime.datetime.now() - datetime.datetime.fromtimestamp(player['updated']))}")
+        embed.set_author(name = f"{player['username'] if player['username'] else username}", icon_url = f"https://minotar.net/helm/{player['username']}.png")
+
+        await ctx.send(embed=embed)
+
+
+def setup(client):
+    client.add_cog(Player(client))
