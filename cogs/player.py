@@ -38,7 +38,7 @@ class Player(commands.Cog):
 
         embed = discord.Embed(
             description = (
-                f"**Basic Information test**:\n"
+                f"**Basic Information**:\n"
                 f"<:username:742141709068271727> Username: {player['username'] if player['nickname'] else username}\n"
                 f"💬 Nickname: {player['nickname'] if player['nickname'] else 'None'}\n"
                 f"{self.client.house_emojis[player['house'].lower()] if player['house'] else '🏠'} House: {player['house'].lower().capitalize() if player['house'] else 'Unsorted'}\n"
