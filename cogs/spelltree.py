@@ -43,8 +43,7 @@ class Spelltree(commands.Cog):
         defensive = [item for item in player["unlockables"] if "spelltrees_defensive" in item]
         transfiguration = [item for item in player["unlockables"] if "spelltrees_transfiguration" in item]
 
-        for x in charms:
-            x[18:]
+        charms = [e[18:] for e in charms]
 
         embed = discord.Embed(
             description = (
