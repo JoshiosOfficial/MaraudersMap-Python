@@ -35,7 +35,7 @@ client.x_emoji = ':x:'
 client.check_emoji = ':white_check_mark:'
 
 spells_response = await client.session.get(f"https://api.potterworldmc.com/spells")
-spells = await seplls_response.json()
+spells = await spells_response.json()
 
 @client.event
 async def on_ready():
