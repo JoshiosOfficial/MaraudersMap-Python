@@ -31,6 +31,9 @@ client.status_emojis = {
     "offline": "<:offline:763147752002682900>"
 }
 
+client.x_emoji = ':x:'
+client.check_emoji = ':white_check_mark:'
+
 @client.event
 async def on_ready():
     print(f'Logged in as {client.user}')
