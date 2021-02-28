@@ -9,6 +9,23 @@ class Spelltree(commands.Cog):
 
     def __init__(self, client):
         self.client = client
+        self.data = None
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        self.spells_response = await self.client.session.get(f"https://api.potterworldmc.com/spells")
+        self.spells = await self.spells_response.json()
+
+    def spell_to_readable(self, spell):
+        if (spell == "protegototalum"): 
+            return 'Protellum'
+
+        if (spell == "antiapparate"):
+            return 'Anti-Appareo'
+
+        for x in self.spells['spells']:
+          if x['key'] == spell:
+              return x['name']
 
     @commands.command()
     async def spelltree(self, ctx, username=None):
@@ -43,19 +60,19 @@ class Spelltree(commands.Cog):
         defensive = [item for item in player["unlockables"] if "spelltrees_defensive" in item]
         transfiguration = [item for item in player["unlockables"] if "spelltrees_transfiguration" in item]
 
-        charms = [e[18:] for e in charms]
-        curses = [e[18:] for e in curses]
-        jinxes = [e[18:] for e in jinxes]
-        defensive = [e[21:] for e in defensive]
-        transfiguration = [e[27:] for e in transfiguration]
+        charms = [self.spell_to_readable(e[18:]) for e in charms]
+        curses = [self.spell_to_readable(e[18:]) for e in curses]
+        jinxes = [self.spell_to_readable(e[18:]) for e in jinxes]
+        defensive = [self.spell_to_readable(e[21:]) for e in defensive]
+        transfiguration = [self.spell_to_readable(e[27:]) for e in transfiguration]
 
         embed = discord.Embed(
             description = (
-                f"Charms\n {nl.join(charms) if len(charms) != 0 else 'None'}\n\n"
-                f"Jinxes\n {nl.join(jinxes) if len(jinxes) != 0 else 'None'}\n\n"
-                f"Curses\n {nl.join(curses) if len(curses) != 0 else 'None'}\n\n"
-                f"Transfiguration\n {nl.join(transfiguration) if len(transfiguration) != 0 else 'None'}\n\n"
-                f"Defensive\n {nl.join(defensive) if len(defensive) != 0 else 'None'}\n\n"
+                f"<:charms:742480444855025775> **Charms**:\n {nl.join(charms) if len(charms) != 0 else 'None'}\n\n"
+                f"<:jinxes:742481106711871619> **Jinxes**:\n {nl.join(jinxes) if len(jinxes) != 0 else 'None'}\n\n"
+                f"<:curses:742481337784598608> **Curses**:\n {nl.join(curses) if len(curses) != 0 else 'None'}\n\n"
+                f"<:transfiguration:742481688080416870> **Transfiguration**:\n {nl.join(transfiguration) if len(transfiguration) != 0 else 'None'}\n\n"
+                f"<:defensive:742481924387242004> **Defensive**:\n {nl.join(defensive) if len(defensive) != 0 else 'None'}\n\n"
             ),
             color = self.client.house_colors[data["player"]["house"].lower()] if data["player"]["house"] else self.client.main_color,
         )
