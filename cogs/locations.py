@@ -72,7 +72,7 @@ class Locations(commands.Cog):
             color = self.client.house_colors[data["player"]["house"].lower()] if data["player"]["house"] else self.client.main_color,
         )
         embed.set_footer(text = f"Last updated: {humanize.naturaltime(datetime.datetime.now() - datetime.datetime.fromtimestamp(player['updated']))}")
-        embed.set_author(name = f"{player['username'] if player['username'] else username}", icon_url = f"https://minotar.net/helm/{player['username']}.png")
+        embed.set_author(name = f"{player['username'] if player['username'] else username}", icon_url = f"https://minotar.net/helm/{player['uuid']}.png")
 
         await ctx.send(embed=embed)
 

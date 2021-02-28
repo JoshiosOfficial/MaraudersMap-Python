@@ -6,7 +6,7 @@ import datetime
 import humanize
 
 class Spelltree(commands.Cog):
-    
+
     def __init__(self, client):
         self.client = client
 
@@ -17,7 +17,7 @@ class Spelltree(commands.Cog):
             embed = discord.Embed(
                 description = f"The player `{username}` was not found. This means that this player never joined Potterworld before, or you incorrectly spelled their username. Please try again.",
                 title = "Player Not Found",
-                color = self.client.main_color 
+                color = self.client.main_color
             )
             await ctx.send(embed=embed)
             return
@@ -29,11 +29,11 @@ class Spelltree(commands.Cog):
             embed = discord.Embed(
                 description = f"The player `{username}` was not found. This means that this player never joined Potterworld before, or you incorrectly spelled their username. Please try again.",
                 title = "Player Not Found",
-                color = self.client.main_color 
+                color = self.client.main_color
             )
             await ctx.send(embed=embed)
             return
- 
+
         nl = "\n"
         player = data["player"]
 
@@ -54,7 +54,7 @@ class Spelltree(commands.Cog):
             color = self.client.house_colors[data["player"]["house"].lower()] if data["player"]["house"] else self.client.main_color,
         )
         embed.set_footer(text = f"Last updated: {humanize.naturaltime(datetime.datetime.now() - datetime.datetime.fromtimestamp(player['updated']))}")
-        embed.set_author(name = f"{player['username'] if player['username'] else username}", icon_url = f"https://minotar.net/helm/{player['username']}.png")
+        embed.set_author(name = f"{player['username'] if player['username'] else username}", icon_url = f"https://minotar.net/helm/{player['uuid']}.png")
 
         await ctx.send(embed=embed)
 
