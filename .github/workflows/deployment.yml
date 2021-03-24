@@ -1,0 +1,20 @@
+name: Deploy to Production
+on:
+  push:
+    branches: [ master ]
+jobs:
+  Deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    steps:
+    - name: SSH to Production and Deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: root
+        port: ${{ secrets.PORT }}
+        password: ${{ secrets.PASSWORD }}
+        script: |
+          cd ~/MaraudersMap-Python
+          git pull
+          pm2 restart MaraudersMap-Python
