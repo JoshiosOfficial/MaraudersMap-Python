@@ -3,10 +3,16 @@ import os
 
 from discord.ext import commands
 from datetime import datetime
+from dotenv import load_dotenv,find_dotenv
+
+from pathlib import Path
+env_path = Path('.') / '.env'
 
 import aiohttp
 
-client = commands.Bot(command_prefix = '?', intents = discord.Intents.all(), case_insensitive = True)
+load_dotenv(find_dotenv())
+
+client = commands.Bot(command_prefix = '-', intents = discord.Intents.all(), case_insensitive = True)
 
 client.house_colors = {
     "griffin": 0xD92C2C,
@@ -62,5 +68,5 @@ for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
         client.load_extension(f"cogs.{filename[:-3]}")
 
-
-client.run('NzU3MzQwNDc1MzQ1NzMxNzY1.X2e-SA.x8Yr1lA5yHZBUngg0coX119mZd0') # MARAUDER MAP ALPHA
+token = os.getenv('DISCORD_TOKEN')
+client.run(token) # MARAUDER MAP ALPHA
