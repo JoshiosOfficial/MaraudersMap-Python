@@ -46,7 +46,7 @@ class Locations(commands.Cog):
             description = (
                 f"**Locations Explored**: {len([match for match in player['unlockables'] if 'world_discovery_' in match] if player['unlockables'] else '0')}/21\n"
                 f"**Hogsworth Fast Travel**: {len([match for match in player['unlockables'] if 'world_fasttravel_' in match] if player['unlockables'] else '0')}/19\n"
-                f"**Warpkey Bag**: {warpkeybag[14:].capitalize()}\n\n"
+                f"**Warp Key Bag**: {warpkeybag[14:].capitalize()}\n\n"
                 f"{':white_check_mark:' if 'world_discovery_hogsworth' in player['unlockables'] else ':x:'} Hogsworth\n"
                 f"{':white_check_mark:' if 'world_discovery_hogsend' in player['unlockables'] else ':x:'} Hogsend\n"
                 f"{':white_check_mark:' if 'world_discovery_ministry' in player['unlockables'] else ':x:'} Ministry\n"
