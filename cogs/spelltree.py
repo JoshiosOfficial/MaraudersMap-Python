@@ -80,6 +80,7 @@ class Spelltree(commands.Cog):
         for spelltree in spelltrees:
             emote = self.client.emotes[spelltree.upper()]
             spells = "\n".join(spelltrees[spelltree]) if len(spelltrees[spelltree]) != 0 else 'None'
+            
             description.append(f"{emote} **{spelltree.capitalize()}**:\n {spells}\n")
 
         embed = discord.Embed(
