@@ -13,6 +13,8 @@ load_dotenv(find_dotenv())
 prefix = os.getenv('PREFIX')
 client = commands.Bot(command_prefix = prefix, intents = discord.Intents.all(), case_insensitive = True)
 
+client.prefix = prefix
+
 with open('locations.json') as f:
   client.locations = json.load(f)
 
@@ -39,19 +41,19 @@ async def on_ready():
     print(f'Logged in as {client.user}')
     client.session = aiohttp.ClientSession()
 
-@client.command()
+@client.command(hidden=True)
 @commands.is_owner()
 async def load(ctx, extension):
     client.load_extension(f"cogs.{extension}")
     await ctx.send(f"Successfully loaded `{extension}` cog!")
 
-@client.command()
+@client.command(hidden=True)
 @commands.is_owner()
 async def unload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
     await ctx.send(f"Successfully unloaded `{extension}` cog!")
 
-@client.command()
+@client.command(hidden=True)
 @commands.is_owner()
 async def reload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
