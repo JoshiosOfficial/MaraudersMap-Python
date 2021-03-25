@@ -14,11 +14,8 @@ class Player(commands.Cog):
     async def player(self, ctx, username=None):
 
         if not username:
-            embed = discord.Embed(
-                description = f"The player `{username}` was not found. This means that this player never joined Potterworld before, or you incorrectly spelled their username. Please try again.",
-                title = "Player Not Found",
-                color = self.client.main_color
-            )
+            embed = self.client.NOT_FOUND_EMBED.copy()
+            embed.description = embed.description.format(username=username)
             await ctx.send(embed=embed)
             return
 
@@ -26,11 +23,8 @@ class Player(commands.Cog):
         data = await response.json()
 
         if data['status'] == False:
-            embed = discord.Embed(
-                description = f"The player `{username}` was not found. This means that this player never joined Potterworld before, or you incorrectly spelled their username. Please try again.",
-                title = "Player Not Found",
-                color = self.client.main_color
-            )
+            embed = self.client.NOT_FOUND_EMBED.copy()
+            embed.description = embed.description.format(username=username)
             await ctx.send(embed=embed)
             return
 
@@ -39,18 +33,18 @@ class Player(commands.Cog):
         embed = discord.Embed(
             description = (
                 f"**Basic Information**:\n"
-                f"<:username:742141709068271727> Username: {player['username'] if player['nickname'] else username}\n"
-                f"💬 Nickname: {player['nickname'] if player['nickname'] else 'None'}\n"
+                f"{self.client.emotes['USERNAME']} Username: {player['username'] if player['nickname'] else username}\n"
+                f"{self.client.emotes['NICKNAME']} Nickname: {player['nickname'] if player['nickname'] else 'None'}\n"
                 f"{self.client.house_emojis[player['house'].lower()] if player['house'] else '🏠'} House: {player['house'].lower().capitalize() if player['house'] else 'Unsorted'}\n"
-                f"<:potterworld:742140640464470077> Join Date: {datetime.datetime.fromtimestamp(player['joined']).strftime('%B %d, %Y') if player['joined'] > 0 else 'Unknown'}\n\n"
+                f"{self.client.emotes['JOIN_DATE']} Join Date: {datetime.datetime.fromtimestamp(player['joined']).strftime('%B %d, %Y') if player['joined'] > 0 else 'Unknown'}\n\n"
                 f"**Progression**:\n"
-                f"🕒 Year: {player['year'] if player['year'] else 'Year 1'} (Level {player['stats']['experience']['level'] if (player['stats']) and ('experience' in player['stats']) else '1'})\n"
-                f"<:spell:742140166138757199> Spells: {len(player['spells']) if player['spells'] else '0'}\n"
-                f"📖 Classes Attended: {player['stats']['classes_attended']['balance'] if (player['stats']) and ('classes_attended' in player['stats']) else '0'}\n"
-                f"🗺️ Locations Explored: {len([match for match in player['unlockables'] if 'world_discovery_' in match] if player['unlockables'] else '0')}\n\n"
+                f"{self.client.emotes['YEAR']} Year: {player['year'] if player['year'] else 'Year 1'} (Level {player['stats']['experience']['level'] if (player['stats']) and ('experience' in player['stats']) else '1'})\n"
+                f"{self.client.emotes['SPELLS']} Spells: {len(player['spells']) if player['spells'] else '0'}\n"
+                f"{self.client.emotes['CLASSES_ATTENDED']} Classes Attended: {player['stats']['classes_attended']['balance'] if (player['stats']) and ('classes_attended' in player['stats']) else '0'}\n"
+                f"{self.client.emotes['LOCATIONS_EXPLORED']} Locations Explored: {len([match for match in player['unlockables'] if 'world_discovery_' in match] if player['unlockables'] else '0')}\n\n"
                 f"{'This player is a **staff member**.' if 'staff' in player else ''}"
             ),
-            color = self.client.house_colors[data["player"]["house"].lower()] if data["player"]["house"] else self.client.main_color,
+            color = self.client.house_colors[player["house"].lower()] if player["house"] else self.client.main_color,
         )
         embed.set_footer(text = f"Last updated: {humanize.naturaltime(datetime.datetime.now() - datetime.datetime.fromtimestamp(player['updated']))}")
         embed.set_author(name = f"{player['username'] if player['username'] else username}", icon_url = f"https://minotar.net/helm/{player['uuid']}.png")
