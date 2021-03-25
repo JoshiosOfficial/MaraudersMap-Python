@@ -37,25 +37,26 @@ class Locations(commands.Cog):
             'world_fasttravel': [],
         }
 
-        for unlockable in player['unlockables']:
-            if 'world_discovery_' in unlockable:
-                locs["locations"].append(unlockable)
+        if 'unlockables' in player:
+            for unlockable in player['unlockables']:
+                if 'world_discovery_' in unlockable:
+                    locs["locations"].append(unlockable)
 
-            elif 'world_warpkey2' in unlockable and unlockable != 'world_warpkey2_unlock':
-                locs["warpkey_bag_list2"].append(unlockable)
+                elif 'world_warpkey2' in unlockable and unlockable != 'world_warpkey2_unlock':
+                    locs["warpkey_bag_list2"].append(unlockable)
 
-            elif 'world_warpkey' in unlockable:
-                locs["warpkey_bag_list"].append(unlockable)
+                elif 'world_warpkey' in unlockable:
+                    locs["warpkey_bag_list"].append(unlockable)
 
-            elif 'world_fasttravel_' in unlockable:
-                locs["world_fasttravel"].append(unlockable)
+                elif 'world_fasttravel_' in unlockable:
+                    locs["world_fasttravel"].append(unlockable)
 
         warpkey_bag = self.client.locations[locs['warpkey_bag_list'][0][14:]] if len(locs['warpkey_bag_list']) > 0 else "Unknown"
         warpkey_bag2 = self.client.locations[locs['warpkey_bag_list2'][0][15:]] if len(locs['warpkey_bag_list2']) > 0 else "Unknown"
 
         description = [
-            f"**Locations Explored**: {len(locs['locations']) if player['unlockables'] else '0'}/21\n"
-            f"**Hogsworth Fast Travel**: {len(locs['world_fasttravel']) if player['unlockables'] else '0'}/19\n"
+            f"**Locations Explored**: {len(locs['locations'])}/21\n"
+            f"**Hogsworth Fast Travel**: {len(locs['world_fasttravel'])}/19\n"
             f"**Warp Point**: {warpkey_bag}\n"
             f"**Warp Point #2**: {warpkey_bag2}\n"
         ]
