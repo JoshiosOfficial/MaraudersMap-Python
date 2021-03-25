@@ -27,7 +27,12 @@ class Spelltree(commands.Cog):
           if x['key'] == spell:
               return x['name']
 
-    @commands.command()
+    @commands.command(
+        name = 'spelltree',
+        aliases = ['sp', 'sps', 'spelltrees'],
+        brief = 'Shows the spell tree of a player.'
+    )
+    @commands.has_role('Bug Tester')
     async def spelltree(self, ctx, username=None):
 
         if not username or len(username) > 24:

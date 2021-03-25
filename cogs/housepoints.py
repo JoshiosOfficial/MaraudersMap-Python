@@ -8,7 +8,12 @@ class Housepoints(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command()
+    @commands.command(
+        name = 'housepoints',
+        aliases = ['hp', 'hps'],
+        brief = 'Displays the current housepoints for each house.'
+    )
+    @commands.has_role('Bug Tester')
     async def housepoints(self, ctx):
 
         response = await self.client.session.get("https://api.potterworldmc.com/housepoints")

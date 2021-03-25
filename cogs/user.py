@@ -6,7 +6,11 @@ class User(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command()
+    @commands.command(
+        name = 'user',
+        aliases = ['u']
+    )
+    @commands.has_role('Bug Tester')
     async def user(self, ctx, user: discord.Member=None):
 
         if not user:

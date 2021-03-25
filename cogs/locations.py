@@ -10,7 +10,12 @@ class Locations(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command()
+    @commands.command(
+        name = 'locations',
+        aliases = ['l', 'location', 'exploration'],
+        brief = 'Shows location statistics about a player.'
+    )
+    @commands.has_role('Bug Tester')
     async def locations(self, ctx, username=None):
 
         if not username or len(username) > 24:

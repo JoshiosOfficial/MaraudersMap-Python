@@ -10,7 +10,12 @@ class Player(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command()
+    @commands.command(
+        name = 'player',
+        aliases = ['whois', 'p', 'profile'],
+        brief = 'Provides Potterworld statistics about a player.'
+    )
+    @commands.has_role('Bug Tester')
     async def player(self, ctx, username=None):
 
         if not username or len(username) > 24:
