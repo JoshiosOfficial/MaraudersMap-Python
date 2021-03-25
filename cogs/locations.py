@@ -19,7 +19,7 @@ class Locations(commands.Cog):
                 title = "Player Not Found",
                 color = self.client.main_color
             )
-            await ctx.send(embed=self.embed)
+            await ctx.send(embed=embed)
             return
 
         response = await self.client.session.get(f"https://api.potterworldmc.com/player/{username}")
@@ -31,32 +31,37 @@ class Locations(commands.Cog):
                 title = "Player Not Found",
                 color = self.client.main_color
             )
-            await ctx.send(embed=self.embed)
+            await ctx.send(embed=embed)
             return
 
         player = data["player"]
 
-        locations = []
-        warpkey_bag_list = []
-        warpkey_bag_list2 = []
-        world_fasttravel = []
+        locs = {
+            'locations': [],
+            'warpkey_bag_list': [],
+            'warpkey_bag_list2': [],
+            'world_fasttravel': [],
+        }
 
         for unlockable in player['unlockables']:
             if 'world_discovery_' in unlockable:
-                locations.append(unlockable)
-            elif 'world_warpkey' in unlockable:
-                warpkey_bag_list.append(unlockable)
-            elif 'world_warpkey2' in unlockable:
-                warpkey_bag_list2.append(unlockable)
-            elif 'world_fasttravel_' in unlockable:
-                world_fasttravel.append(unlockable)
+                locs["locations"].append(unlockable)
 
-        warpkey_bag = self.client.locations[warpkey_bag_list[0][14:]] if len(warpkey_bag_list) > 0 else "Unknown"
-        warpkey_bag2 = self.client.locations[warpkey_bag_list2[0][15:]] if len(warpkey_bag_list2) > 0 else "Unknown"
+            elif 'world_warpkey2' in unlockable and unlockable != 'world_warpkey2_unlock':
+                locs["warpkey_bag_list2"].append(unlockable)
+
+            elif 'world_warpkey' in unlockable:
+                locs["warpkey_bag_list"].append(unlockable)
+
+            elif 'world_fasttravel_' in unlockable:
+                locs["world_fasttravel"].append(unlockable)
+
+        warpkey_bag = self.client.locations[locs['warpkey_bag_list'][0][14:]] if len(locs['warpkey_bag_list']) > 0 else "Unknown"
+        warpkey_bag2 = self.client.locations[locs['warpkey_bag_list2'][0][15:]] if len(locs['warpkey_bag_list2']) > 0 else "Unknown"
 
         description = [
-            f"**Locations Explored**: {len(locations) if player['unlockables'] else '0'}/21\n"
-            f"**Hogsworth Fast Travel**: {len(world_fasttravel) if player['unlockables'] else '0'}/19\n"
+            f"**Locations Explored**: {len(locs['locations']) if player['unlockables'] else '0'}/21\n"
+            f"**Hogsworth Fast Travel**: {len(locs['world_fasttravel']) if player['unlockables'] else '0'}/19\n"
             f"**Warp Point**: {warpkey_bag}\n"
             f"**Warp Point #2**: {warpkey_bag2}\n"
         ]
@@ -64,7 +69,7 @@ class Locations(commands.Cog):
         for location in self.client.locations:
             id = "world_discovery_" + location
 
-            emote = self.client.emotes["YES"] if id in locations else self.client.emotes["NO"]
+            emote = self.client.emotes["YES" if id in locs['locations'] else "NO"]
             description.append(f"{emote} {self.client.locations[location]}")
 
         embed = discord.Embed(
