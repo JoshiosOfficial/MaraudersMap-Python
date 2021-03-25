@@ -32,11 +32,11 @@ class Spelltree(commands.Cog):
 
         if not username or len(username) > 24:
             embed = self.client.NOT_FOUND_EMBED.copy()
-            embed.description = embed.description.format(username=username)
+            embed.description = embed.description.format(username=(username if len(username) <= 24 else None))
             await ctx.send(embed=embed)
             return
 
-        response = await self.client.session.get(f"https://api.potterworldmc.com/player/{username}")
+        response = await self.client.session.get(f"https://api.potterworldmc.com/player/{username.replace('/', '')}")
         data = await response.json()
 
         if data['status'] == False:
