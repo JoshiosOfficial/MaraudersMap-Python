@@ -18,6 +18,10 @@ class ErrorHandler(commands.Cog):
         for command in self.client.commands:
             self.command_list.append(str(command))
 
+            actual_command = self.client.get_command(str(command))
+            for alias in actual_command.aliases:
+                self.command_list.append(alias)
+
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
