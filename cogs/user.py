@@ -12,8 +12,6 @@ class User(commands.Cog):
         if not user:
             user = ctx.author
 
-        status_emojis = self.client.status_emojis
-
         username = (
             f"**Username**\n"
             f"{user.mention} (`{user.id}`)\n\n"
@@ -38,9 +36,9 @@ class User(commands.Cog):
 
         status = (
             f"**Status**\n"
-            f"{status_emojis[user.desktop_status.value]} Desktop\n"
-            f"{status_emojis[user.web_status.value]} Web\n"
-            f"{status_emojis[user.mobile_status.value]} Mobile\n\n"
+            f"{self.client.emotes[user.desktop_status.value.upper()]} Desktop\n"
+            f"{self.client.emotes[user.web_status.value.upper()]} Web\n"
+            f"{self.client.emotes[user.mobile_status.value.upper()]} Mobile\n\n"
         )
 
         member_roles = [r.mention for r in user.roles][::-1]

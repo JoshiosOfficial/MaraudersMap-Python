@@ -28,14 +28,6 @@ client.house_colors = {
 
 client.main_color = 0xA62019
 
-client.status_emojis = {
-    "dnd": "<:dnd:763148593569333268>",
-    "online": "<:online:763148147295518790>",
-    "idle": "<:idle:763148634556071967>",
-    "offline": "<:offline:763147752002682900>"
-}
-
-
 client.NOT_FOUND_EMBED = discord.Embed(
     description = "The player `{username}` was not found. This means that this player never joined Potterworld before, or you incorrectly spelled their username. Please try again.",
     title = "Player Not Found",
