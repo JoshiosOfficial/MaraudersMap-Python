@@ -5,14 +5,18 @@ from discord.ext import commands
 from datetime import datetime
 from dotenv import load_dotenv,find_dotenv
 
-from pathlib import Path
-env_path = Path('.') / '.env'
-
 import aiohttp
+import json
 
 load_dotenv(find_dotenv())
 
-client = commands.Bot(command_prefix = '-', intents = discord.Intents.all(), case_insensitive = True)
+client = commands.Bot(command_prefix = '?', intents = discord.Intents.all(), case_insensitive = True)
+
+with open('locations.json') as f:
+  client.locations = json.load(f)
+
+with open('emotes.json', encoding="utf8") as f:
+  client.emotes = json.load(f)
 
 client.house_colors = {
     "griffin": 0xD92C2C,
@@ -36,9 +40,6 @@ client.status_emojis = {
     "idle": "<:idle:763148634556071967>",
     "offline": "<:offline:763147752002682900>"
 }
-
-client.x_emoji = ':x:'
-client.check_emoji = ':white_check_mark:'
 
 @client.event
 async def on_ready():
