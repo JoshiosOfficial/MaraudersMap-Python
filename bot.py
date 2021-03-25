@@ -10,7 +10,8 @@ import json
 
 load_dotenv(find_dotenv())
 
-client = commands.Bot(command_prefix = '?', intents = discord.Intents.all(), case_insensitive = True)
+prefix = os.getenv('PREFIX')
+client = commands.Bot(command_prefix = prefix, intents = discord.Intents.all(), case_insensitive = True)
 
 with open('locations.json') as f:
   client.locations = json.load(f)
