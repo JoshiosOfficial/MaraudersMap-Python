@@ -55,32 +55,33 @@ class Spelltree(commands.Cog):
             'defensive': [],
         }
 
-        for unlockable in player['unlockables']:
-            if "spelltrees_charms" in unlockable:
-                spell = self.spell_to_readable(unlockable[18:])
-                spelltrees['charms'].append(spell)
+        if 'unlockables' in player:
+            for unlockable in player['unlockables']:
+                if "spelltrees_charms" in unlockable:
+                    spell = self.spell_to_readable(unlockable[18:])
+                    spelltrees['charms'].append(spell)
 
-            elif "spelltrees_jinxes" in unlockable:
-                spell = self.spell_to_readable(unlockable[18:])
-                spelltrees['jinxes'].append(spell)
+                elif "spelltrees_jinxes" in unlockable:
+                    spell = self.spell_to_readable(unlockable[18:])
+                    spelltrees['jinxes'].append(spell)
 
-            elif "spelltrees_curses" in unlockable:
-                spell = self.spell_to_readable(unlockable[18:])
-                spelltrees['curses'].append(spell)
+                elif "spelltrees_curses" in unlockable:
+                    spell = self.spell_to_readable(unlockable[18:])
+                    spelltrees['curses'].append(spell)
 
-            elif "spelltrees_transfiguration" in unlockable:
-                spell = self.spell_to_readable(unlockable[27:])
-                spelltrees['transfiguration'].append(spell)
+                elif "spelltrees_transfiguration" in unlockable:
+                    spell = self.spell_to_readable(unlockable[27:])
+                    spelltrees['transfiguration'].append(spell)
 
-            elif "spelltrees_defensive" in unlockable:
-                spell = self.spell_to_readable(unlockable[21:])
-                spelltrees['defensive'].append(spell)
+                elif "spelltrees_defensive" in unlockable:
+                    spell = self.spell_to_readable(unlockable[21:])
+                    spelltrees['defensive'].append(spell)
 
         description = []
         for spelltree in spelltrees:
             emote = self.client.emotes[spelltree.upper()]
             spells = "\n".join(spelltrees[spelltree]) if len(spelltrees[spelltree]) != 0 else 'None'
-            
+
             description.append(f"{emote} **{spelltree.capitalize()}**:\n {spells}\n")
 
         embed = discord.Embed(
