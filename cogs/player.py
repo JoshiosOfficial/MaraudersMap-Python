@@ -13,7 +13,7 @@ class Player(commands.Cog):
     @commands.command()
     async def player(self, ctx, username=None):
 
-        if not username:
+        if not username or len(username) > 24:
             embed = self.client.NOT_FOUND_EMBED.copy()
             embed.description = embed.description.format(username=username)
             await ctx.send(embed=embed)
@@ -33,7 +33,7 @@ class Player(commands.Cog):
         embed = discord.Embed(
             description = (
                 f"**Basic Information**:\n"
-                f"{self.client.emotes['USERNAME']} Username: {player['username'] if player['nickname'] else username}\n"
+                f"{self.client.emotes['USERNAME']} Username: {player['username'] if player['username'] else username}\n"
                 f"{self.client.emotes['NICKNAME']} Nickname: {player['nickname'] if player['nickname'] else 'None'}\n"
                 f"{self.client.emotes[player['house'].upper()] if player['house'] else '🏠'} House: {player['house'].lower().capitalize() if player['house'] else 'Unsorted'}\n"
                 f"{self.client.emotes['JOIN_DATE']} Join Date: {datetime.datetime.fromtimestamp(player['joined']).strftime('%B %d, %Y') if 'joined' in player and player['joined'] > 0 else 'Unknown'}\n\n"

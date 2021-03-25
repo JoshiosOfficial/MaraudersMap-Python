@@ -30,7 +30,7 @@ class Spelltree(commands.Cog):
     @commands.command()
     async def spelltree(self, ctx, username=None):
 
-        if not username:
+        if not username or len(username) > 24:
             embed = self.client.NOT_FOUND_EMBED.copy()
             embed.description = embed.description.format(username=username)
             await ctx.send(embed=embed)
