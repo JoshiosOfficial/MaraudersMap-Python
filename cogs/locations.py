@@ -14,11 +14,8 @@ class Locations(commands.Cog):
     async def locations(self, ctx, username=None):
 
         if not username:
-            embed = discord.Embed(
-                description = f"The player `{username}` was not found. This means that this player never joined Potterworld before, or you incorrectly spelled their username. Please try again.",
-                title = "Player Not Found",
-                color = self.client.main_color
-            )
+            embed = self.client.NOT_FOUND_EMBED.copy()
+            embed.description = embed.description.format(username=username)
             await ctx.send(embed=embed)
             return
 
@@ -26,11 +23,8 @@ class Locations(commands.Cog):
         data = await response.json()
 
         if data['status'] == False:
-            embed = discord.Embed(
-                description = f"The player `{username}` was not found. This means that this player never joined Potterworld before, or you incorrectly spelled their username. Please try again.",
-                title = "Player Not Found",
-                color = self.client.main_color
-            )
+            embed = self.client.NOT_FOUND_EMBED.copy()
+            embed.description = embed.description.format(username=username)
             await ctx.send(embed=embed)
             return
 

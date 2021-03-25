@@ -41,6 +41,13 @@ client.status_emojis = {
     "offline": "<:offline:763147752002682900>"
 }
 
+
+client.NOT_FOUND_EMBED = discord.Embed(
+    description = "The player `{username}` was not found. This means that this player never joined Potterworld before, or you incorrectly spelled their username. Please try again.",
+    title = "Player Not Found",
+    color = client.main_color
+)
+
 @client.event
 async def on_ready():
     print(f'Logged in as {client.user}')
