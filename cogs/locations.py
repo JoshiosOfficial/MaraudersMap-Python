@@ -46,7 +46,7 @@ class Locations(commands.Cog):
         description = [
             f"**Locations Explored**: {len(locations) if player['unlockables'] else '0'}/21\n"
             f"**Hogsworth Fast Travel**: {len([match for match in player['unlockables'] if 'world_fasttravel_' in match] if player['unlockables'] else '0')}/19\n"
-            f"**Warp Point**: {warpkey_bag]}\n"
+            f"**Warp Point**: {warpkey_bag}\n"
             f"**Warp Point #2**: {warpkey_bag2}\n"
         ]
 
