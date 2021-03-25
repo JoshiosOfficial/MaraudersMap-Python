@@ -71,9 +71,11 @@ class Locations(commands.Cog):
             description = "\n".join(description),
             color = self.client.house_colors[player["house"].lower()] if player["house"] else self.client.main_color,
         )
-        embed.set_footer(text = f"Last updated: {humanize.naturaltime(datetime.datetime.now() - datetime.datetime.fromtimestamp(player['updated']))}")
-        embed.set_author(name = f"{player['username'] if player['username'] else username}", icon_url = f"https://minotar.net/helm/{player['uuid']}.png")
 
+        player_link = f"https://potterworldmc.com/player/{player['username'] if player['username'] else username}"
+
+        embed.set_footer(text = f"Last updated: {humanize.naturaltime(datetime.datetime.now() - datetime.datetime.fromtimestamp(player['updated']))}")
+        embed.set_author(name = f"{player['username'] if player['username'] else username}", icon_url = f"https://minotar.net/helm/{player['uuid']}.png", url = player_link)
         await ctx.send(embed=embed)
 
 def setup(client):
