@@ -28,13 +28,6 @@ client.house_colors = {
 
 client.main_color = 0xA62019
 
-client.house_emojis = {
-    "griffin": "<:griffin:742100884707606608>",
-    "raven": "<:raven:742100700439248936>",
-    "serpent": "<:serpent:742101009995661344>",
-    "honeybadger": "<:honeybadger:742101128589606993>"
-}
-
 client.status_emojis = {
     "dnd": "<:dnd:763148593569333268>",
     "online": "<:online:763148147295518790>",

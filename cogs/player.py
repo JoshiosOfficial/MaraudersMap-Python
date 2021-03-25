@@ -35,7 +35,7 @@ class Player(commands.Cog):
                 f"**Basic Information**:\n"
                 f"{self.client.emotes['USERNAME']} Username: {player['username'] if player['nickname'] else username}\n"
                 f"{self.client.emotes['NICKNAME']} Nickname: {player['nickname'] if player['nickname'] else 'None'}\n"
-                f"{self.client.house_emojis[player['house'].lower()] if player['house'] else '🏠'} House: {player['house'].lower().capitalize() if player['house'] else 'Unsorted'}\n"
+                f"{self.client.emotes[player['house'].upper()] if player['house'] else '🏠'} House: {player['house'].lower().capitalize() if player['house'] else 'Unsorted'}\n"
                 f"{self.client.emotes['JOIN_DATE']} Join Date: {datetime.datetime.fromtimestamp(player['joined']).strftime('%B %d, %Y') if player['joined'] > 0 else 'Unknown'}\n\n"
                 f"**Progression**:\n"
                 f"{self.client.emotes['YEAR']} Year: {player['year'] if player['year'] else 'Year 1'} (Level {player['stats']['experience']['level'] if (player['stats']) and ('experience' in player['stats']) else '1'})\n"
