@@ -69,6 +69,19 @@ class ErrorHandler(commands.Cog):
 
             return
 
+        if isinstance(error, commands.MissingRole):
+            embed = discord.Embed(
+                description = (
+                'You do not have permission to use this command.\n'
+                f"The **{error.missing_role}** role is required to run this."
+                ),
+                color = self.client.main_color,
+                title = "Missing Permission"
+            )
+
+            await ctx.send(embed=embed)
+            return
+
         if ctx.command.name in ["load", "unload", "reload"]:
             embed = discord.Embed(
                 description = (
