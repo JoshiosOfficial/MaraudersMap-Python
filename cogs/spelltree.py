@@ -32,7 +32,7 @@ class Spelltree(commands.Cog):
 
         if not username or len(username) > 24:
             embed = self.client.NOT_FOUND_EMBED.copy()
-            embed.description = embed.description.format(username=(username if len(username) <= 24 else None))
+            embed.description = embed.description.format(username=(username if username and len(username) <= 24 else None))
             await ctx.send(embed=embed)
             return
 
