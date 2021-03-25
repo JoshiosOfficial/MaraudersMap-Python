@@ -36,12 +36,12 @@ class Player(commands.Cog):
                 f"{self.client.emotes['USERNAME']} Username: {player['username'] if player['nickname'] else username}\n"
                 f"{self.client.emotes['NICKNAME']} Nickname: {player['nickname'] if player['nickname'] else 'None'}\n"
                 f"{self.client.emotes[player['house'].upper()] if player['house'] else '🏠'} House: {player['house'].lower().capitalize() if player['house'] else 'Unsorted'}\n"
-                f"{self.client.emotes['JOIN_DATE']} Join Date: {datetime.datetime.fromtimestamp(player['joined']).strftime('%B %d, %Y') if player['joined'] > 0 else 'Unknown'}\n\n"
+                f"{self.client.emotes['JOIN_DATE']} Join Date: {datetime.datetime.fromtimestamp(player['joined']).strftime('%B %d, %Y') if 'joined' in player and player['joined'] > 0 else 'Unknown'}\n\n"
                 f"**Progression**:\n"
                 f"{self.client.emotes['YEAR']} Year: {player['year'] if player['year'] else 'Year 1'} (Level {player['stats']['experience']['level'] if (player['stats']) and ('experience' in player['stats']) else '1'})\n"
                 f"{self.client.emotes['SPELLS']} Spells: {len(player['spells']) if player['spells'] else '0'}\n"
                 f"{self.client.emotes['CLASSES_ATTENDED']} Classes Attended: {player['stats']['classes_attended']['balance'] if (player['stats']) and ('classes_attended' in player['stats']) else '0'}\n"
-                f"{self.client.emotes['LOCATIONS_EXPLORED']} Locations Explored: {len([match for match in player['unlockables'] if 'world_discovery_' in match] if player['unlockables'] else '0')}\n\n"
+                f"{self.client.emotes['LOCATIONS_EXPLORED']} Locations Explored: {len([match for match in player['unlockables'] if 'world_discovery_' in match] if 'unlockables' in player else '0')}\n\n"
                 f"{'This player is a **staff member**.' if 'staff' in player else ''}"
             ),
             color = self.client.house_colors[player["house"].lower()] if player["house"] else self.client.main_color,
