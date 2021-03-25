@@ -36,26 +36,36 @@ class Locations(commands.Cog):
 
         player = data["player"]
 
-        locations = [match for match in player['unlockables'] if 'world_discovery_' in match]
-        warpkey_bag_list = [item for item in player["unlockables"] if "world_warpkey" in item]
-        warpkey_bag = self.client.locations[warpkey_bag_list[0][14:]] if len(warpkey_bag_list) > 0 else "Unknown"
+        locations = []
+        warpkey_bag_list = []
+        warpkey_bag_list2 = []
+        world_fasttravel = []
 
-        warpkey_bag_list2 = [item for item in player["unlockables"] if "world_warpkey2" in item and item != "world_warpkey2_unlock"]
+        for unlockable in player['unlockables']:
+            if 'world_discovery_' in unlockable:
+                locations.append(unlockable)
+            elif 'world_warpkey' in unlockable:
+                warpkey_bag_list.append(unlockable)
+            elif 'world_warpkey2' in unlockable:
+                warpkey_bag_list2.append(unlockable)
+            elif 'world_fasttravel_' in unlockable:
+                world_fasttravel.append(unlockable)
+
+        warpkey_bag = self.client.locations[warpkey_bag_list[0][14:]] if len(warpkey_bag_list) > 0 else "Unknown"
         warpkey_bag2 = self.client.locations[warpkey_bag_list2[0][15:]] if len(warpkey_bag_list2) > 0 else "Unknown"
 
         description = [
             f"**Locations Explored**: {len(locations) if player['unlockables'] else '0'}/21\n"
-            f"**Hogsworth Fast Travel**: {len([match for match in player['unlockables'] if 'world_fasttravel_' in match] if player['unlockables'] else '0')}/19\n"
+            f"**Hogsworth Fast Travel**: {len(world_fasttravel) if player['unlockables'] else '0'}/19\n"
             f"**Warp Point**: {warpkey_bag}\n"
             f"**Warp Point #2**: {warpkey_bag2}\n"
         ]
 
-        yes = self.client.emotes["YES"]
-        no = self.client.emotes["NO"]
-
         for location in self.client.locations:
             id = "world_discovery_" + location
-            description.append(f"{yes if id in locations else no} {self.client.locations[location]}")
+
+            emote = self.client.emotes["YES"] if id in locations else self.client.emotes["NO"]
+            description.append(f"{emote} {self.client.locations[location]}")
 
         embed = discord.Embed(
             description = "\n".join(description),
