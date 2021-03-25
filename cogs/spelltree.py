@@ -17,7 +17,7 @@ class Spelltree(commands.Cog):
         self.spells = await self.spells_response.json()
 
     def spell_to_readable(self, spell):
-        if (spell == "protegototalum"): 
+        if (spell == "protegototalum"):
             return 'Protellum'
 
         if (spell == "antiapparate"):
@@ -31,11 +31,8 @@ class Spelltree(commands.Cog):
     async def spelltree(self, ctx, username=None):
 
         if not username:
-            embed = discord.Embed(
-                description = f"The player `{username}` was not found. This means that this player never joined Potterworld before, or you incorrectly spelled their username. Please try again.",
-                title = "Player Not Found",
-                color = self.client.main_color
-            )
+            embed = self.client.NOT_FOUND_EMBED.copy()
+            embed.description = embed.description.format(username=username)
             await ctx.send(embed=embed)
             return
 
@@ -43,38 +40,51 @@ class Spelltree(commands.Cog):
         data = await response.json()
 
         if data['status'] == False:
-            embed = discord.Embed(
-                description = f"The player `{username}` was not found. This means that this player never joined Potterworld before, or you incorrectly spelled their username. Please try again.",
-                title = "Player Not Found",
-                color = self.client.main_color
-            )
+            embed = self.client.NOT_FOUND_EMBED.copy()
+            embed.description = embed.description.format(username=username)
             await ctx.send(embed=embed)
             return
 
-        nl = "\n"
         player = data["player"]
 
-        charms = [item for item in player["unlockables"] if "spelltrees_charms" in item]
-        curses = [item for item in player["unlockables"] if "spelltrees_curses" in item]
-        jinxes = [item for item in player["unlockables"] if "spelltrees_jinxes" in item]
-        defensive = [item for item in player["unlockables"] if "spelltrees_defensive" in item]
-        transfiguration = [item for item in player["unlockables"] if "spelltrees_transfiguration" in item]
+        spelltrees = {
+            'charms': [],
+            'jinxes': [],
+            'curses': [],
+            'transfiguration': [],
+            'defensive': [],
+        }
 
-        charms = [self.spell_to_readable(e[18:]) for e in charms]
-        curses = [self.spell_to_readable(e[18:]) for e in curses]
-        jinxes = [self.spell_to_readable(e[18:]) for e in jinxes]
-        defensive = [self.spell_to_readable(e[21:]) for e in defensive]
-        transfiguration = [self.spell_to_readable(e[27:]) for e in transfiguration]
+        for unlockable in player['unlockables']:
+            if "spelltrees_charms" in unlockable:
+                spell = self.spell_to_readable(unlockable[18:])
+                spelltrees['charms'].append(spell)
+
+            elif "spelltrees_jinxes" in unlockable:
+                spell = self.spell_to_readable(unlockable[18:])
+                spelltrees['jinxes'].append(spell)
+
+            elif "spelltrees_curses" in unlockable:
+                spell = self.spell_to_readable(unlockable[18:])
+                spelltrees['curses'].append(spell)
+
+            elif "spelltrees_transfiguration" in unlockable:
+                spell = self.spell_to_readable(unlockable[27:])
+                spelltrees['transfiguration'].append(spell)
+
+            elif "spelltrees_defensive" in unlockable:
+                spell = self.spell_to_readable(unlockable[21:])
+                spelltrees['defensive'].append(spell)
+
+        description = []
+        for spelltree in spelltrees:
+            emote = self.client.emotes[spelltree.upper()]
+            spells = "\n".join(spelltrees[spelltree]) if len(spelltrees[spelltree]) != 0 else 'None'
+            description.append(f"{emote} **{spelltree.capitalize()}**:\n {spells}\n")
 
         embed = discord.Embed(
-            description = (
-                f"<:charms:742480444855025775> **Charms**:\n {nl.join(charms) if len(charms) != 0 else 'None'}\n\n"
-                f"<:jinxes:742481106711871619> **Jinxes**:\n {nl.join(jinxes) if len(jinxes) != 0 else 'None'}\n\n"
-                f"<:curses:742481337784598608> **Curses**:\n {nl.join(curses) if len(curses) != 0 else 'None'}\n\n"
-                f"<:transfiguration:742481688080416870> **Transfiguration**:\n {nl.join(transfiguration) if len(transfiguration) != 0 else 'None'}\n\n"
-                f"<:defensive:742481924387242004> **Defensive**:\n {nl.join(defensive) if len(defensive) != 0 else 'None'}\n\n"
-            ),
-            color = self.client.house_colors[data["player"]["house"].lower()] if data["player"]["house"] else self.client.main_color,
+            description = "\n".join(description),
+            color = self.client.house_colors[player["house"].lower()] if player["house"] else self.client.main_color,
         )
         embed.set_footer(text = f"Last updated: {humanize.naturaltime(datetime.datetime.now() - datetime.datetime.fromtimestamp(player['updated']))}")
         embed.set_author(name = f"{player['username'] if player['username'] else username}", icon_url = f"https://minotar.net/helm/{player['uuid']}.png")
