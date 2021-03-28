@@ -29,6 +29,28 @@ class Embed(commands.Cog):
             "main": 0xA62019
         }
 
+    async def handle_checks(self, ctx, message):
+        if ctx.author not in self.embeds:
+            error_embed = self.ERROR_EMBED.copy()
+            await ctx.send(embed = error_embed)
+            return False
+
+        if not message:
+            no_argument_embed = self.NO_ARGUMENT_EMBED.copy()
+            no_argument_embed.description = no_argument_embed.description.format(command=ctx.command)
+            await ctx.send(embed = no_argument_embed)
+            return False
+
+        if len(message) > 256 and ctx.command.name in ['author', 'title', 'footer']:
+            error_embed = discord.Embed(
+                description = f"The {ctx.command.name} field can only be 256 characters, and so your input did not work.",
+                color = self.client.main_color
+            )
+            await ctx.send(embed = error_embed)
+            return False
+
+        return True
+
     @commands.group(
         name = 'embed',
         aliases = ['e']
@@ -68,15 +90,8 @@ class Embed(commands.Cog):
 
         if ctx.invoked_subcommand is None:
 
-            if ctx.author not in self.embeds:
-                error_embed = self.ERROR_EMBED.copy()
-                await ctx.send(embed = error_embed)
-                return
-
-            if not message:
-                no_argument_embed = self.NO_ARGUMENT_EMBED.copy()
-                no_argument_embed.description = no_argument_embed.description.format(command=ctx.command)
-                await ctx.send(embed = no_argument_embed)
+            result = await self.handle_checks(ctx, message)
+            if not result:
                 return
 
             embed = self.embeds[ctx.author]['embed']
@@ -298,23 +313,8 @@ class Embed(commands.Cog):
 
         if ctx.invoked_subcommand is None:
 
-            if ctx.author not in self.embeds:
-                error_embed = self.ERROR_EMBED.copy()
-                await ctx.send(embed = error_embed)
-                return
-
-            if not message:
-                no_argument_embed = self.NO_ARGUMENT_EMBED.copy()
-                no_argument_embed.description = no_argument_embed.description.format(command=ctx.command)
-                await ctx.send(embed = no_argument_embed)
-                return
-
-            if len(message) > 256:
-                error_embed = discord.Embed(
-                    description = 'The author field can only be 256 characters, and so your input did not work.',
-                    color = self.client.main_color
-                )
-                await ctx.send(embed = error_embed)
+            result = await self.handle_checks(ctx, message)
+            if not result:
                 return
 
             embed = self.embeds[ctx.author]['embed']
@@ -330,15 +330,8 @@ class Embed(commands.Cog):
 
         if ctx.invoked_subcommand is None:
 
-            if ctx.author not in self.embeds:
-                error_embed = self.ERROR_EMBED.copy()
-                await ctx.send(embed = error_embed)
-                return
-
-            if not message:
-                no_argument_embed = self.NO_ARGUMENT_EMBED.copy()
-                no_argument_embed.description = no_argument_embed.description.format(command=ctx.command)
-                await ctx.send(embed = no_argument_embed)
+            result = await self.handle_checks(ctx, message)
+            if not result:
                 return
 
             embed = self.embeds[ctx.author]['embed']
@@ -365,15 +358,8 @@ class Embed(commands.Cog):
 
         if ctx.invoked_subcommand is None:
 
-            if ctx.author not in self.embeds:
-                error_embed = self.ERROR_EMBED.copy()
-                await ctx.send(embed = error_embed)
-                return
-
-            if not message:
-                no_argument_embed = self.NO_ARGUMENT_EMBED.copy()
-                no_argument_embed.description = no_argument_embed.description.format(command=ctx.command)
-                await ctx.send(embed = no_argument_embed)
+            result = await self.handle_checks(ctx, message)
+            if not result:
                 return
 
             embed = self.embeds[ctx.author]['embed']
@@ -388,23 +374,8 @@ class Embed(commands.Cog):
 
         if ctx.invoked_subcommand is None:
 
-            if ctx.author not in self.embeds:
-                error_embed = self.ERROR_EMBED.copy()
-                await ctx.send(embed = error_embed)
-                return
-
-            if not message:
-                no_argument_embed = self.NO_ARGUMENT_EMBED.copy()
-                no_argument_embed.description = no_argument_embed.description.format(command=ctx.command)
-                await ctx.send(embed = no_argument_embed)
-                return
-
-            if len(message) > 256:
-                error_embed = discord.Embed(
-                    description = 'The title field can only be 256 characters, and so your input did not work.',
-                    color = self.client.main_color
-                )
-                await ctx.send(embed = error_embed)
+            result = await self.handle_checks(ctx, message)
+            if not result:
                 return
 
             embed = self.embeds[ctx.author]['embed']
@@ -419,15 +390,8 @@ class Embed(commands.Cog):
 
         if ctx.invoked_subcommand is None:
 
-            if ctx.author not in self.embeds:
-                error_embed = self.ERROR_EMBED.copy()
-                await ctx.send(embed = error_embed)
-                return
-
-            if not message:
-                no_argument_embed = self.NO_ARGUMENT_EMBED.copy()
-                no_argument_embed.description = no_argument_embed.description.format(command=ctx.command)
-                await ctx.send(embed = no_argument_embed)
+            result = await self.handle_checks(ctx, message)
+            if not result:
                 return
 
             embed = self.embeds[ctx.author]['embed']
@@ -441,23 +405,9 @@ class Embed(commands.Cog):
     async def footer(self, ctx, *, message=None):
 
         if ctx.invoked_subcommand is None:
-            if ctx.author not in self.embeds:
-                error_embed = self.ERROR_EMBED.copy()
-                await ctx.send(embed = error_embed)
-                return
 
-            if not message:
-                no_argument_embed = self.NO_ARGUMENT_EMBED.copy()
-                no_argument_embed.description = no_argument_embed.description.format(command=ctx.command)
-                await ctx.send(embed = no_argument_embed)
-                return
-
-            if len(message) > 256:
-                error_embed = discord.Embed(
-                    description = 'The footer field can only be 256 characters, and so your input did not work.',
-                    color = self.client.main_color
-                )
-                await ctx.send(embed = error_embed)
+            result = await self.handle_checks(ctx, message)
+            if not result:
                 return
 
             embed = self.embeds[ctx.author]['embed']
@@ -472,15 +422,8 @@ class Embed(commands.Cog):
 
         if ctx.invoked_subcommand is None:
 
-            if ctx.author not in self.embeds:
-                error_embed = self.ERROR_EMBED.copy()
-                await ctx.send(embed = error_embed)
-                return
-
-            if not message:
-                no_argument_embed = self.NO_ARGUMENT_EMBED.copy()
-                no_argument_embed.description = no_argument_embed.description.format(command=ctx.command)
-                await ctx.send(embed = no_argument_embed)
+            result = await self.handle_checks(ctx, message)
+            if not result:
                 return
 
             self.embeds[ctx.author]['content'] = message
@@ -493,15 +436,8 @@ class Embed(commands.Cog):
 
         if ctx.invoked_subcommand is None:
 
-            if ctx.author not in self.embeds:
-                error_embed = self.ERROR_EMBED.copy()
-                await ctx.send(embed = error_embed)
-                return
-
-            if not message:
-                no_argument_embed = self.NO_ARGUMENT_EMBED.copy()
-                no_argument_embed.description = no_argument_embed.description.format(command=ctx.command)
-                await ctx.send(embed = no_argument_embed)
+            result = await self.handle_checks(ctx, message)
+            if not result:
                 return
 
             emojis = []
@@ -518,15 +454,8 @@ class Embed(commands.Cog):
 
         if ctx.invoked_subcommand is None:
 
-            if ctx.author not in self.embeds:
-                error_embed = self.ERROR_EMBED.copy()
-                await ctx.send(embed = error_embed)
-                return
-
-            if not message:
-                no_argument_embed = self.NO_ARGUMENT_EMBED.copy()
-                no_argument_embed.description = no_argument_embed.description.format(command=ctx.command)
-                await ctx.send(embed = no_argument_embed)
+            result = await self.handle_checks(ctx, message)
+            if not result:
                 return
 
             embed = self.embeds[ctx.author]['embed']
